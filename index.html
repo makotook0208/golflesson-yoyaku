@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 開いたままの来訪者にも最新を届けるため60秒ごとに自動再読み込み -->
+<meta http-equiv="refresh" content="60">
+<title>高橋レッスン予約状況</title>
+<style>
+  :root{
+    --ink:#2b2b2b;
+    --full:#9aa0a6;     /* 満員（控えめなグレー） */
+    --open:#1a73e8;     /* 残りあり（青） */
+    --line:#e6e6e6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:transparent;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .board{
+    max-width:560px;
+    margin:0 auto;
+    padding:18px 20px 14px;
+  }
+  .date{
+    font-size:20px;
+    font-weight:700;
+    text-align:center;
+    margin:0 0 14px;
+    letter-spacing:.02em;
+  }
+  .slot{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    font-size:18px;
+    font-weight:700;
+    padding:9px 4px;
+    border-bottom:1px solid var(--line);
+  }
+  .slot .time{white-space:nowrap;}
+  .slot .status{white-space:nowrap;}
+  .status.full{color:var(--full);}
+  .status.open{color:var(--open);}
+  .note{
+    font-size:13px;
+    line-height:1.7;
+    color:#555;
+    margin:14px 2px 0;
+  }
+  .updated{
+    font-size:12px;
+    color:#9aa0a6;
+    text-align:right;
+    margin-top:12px;
+  }
+</style>
+</head>
+<body>
+  <div class="board">
+    <!-- ▼▼ ここから下が更新対象 ▼▼ -->
+    <p class="date" data-field="date">6/11（木）予約状況</p>
+
+    <div class="slot">
+      <span class="time">①18:00〜19:00</span>
+      <span class="status full" data-slot="1">満員</span>
+    </div>
+    <div class="slot">
+      <span class="time">②19:00〜20:00</span>
+      <span class="status full" data-slot="2">満員</span>
+    </div>
+    <div class="slot">
+      <span class="time">③20:00〜21:00</span>
+      <span class="status open" data-slot="3">残り4名</span>
+    </div>
+
+    <p class="note" data-field="note">☆すべての枠が満員となり、かつ希望者がおられる場合は「21:00〜」の枠を受付いたします。</p>
+    <!-- ▲▲ ここまでが更新対象 ▲▲ -->
+
+    <p class="updated">最終更新：2026/06/11 18:00</p>
+  </div>
+</body>
+</html>
