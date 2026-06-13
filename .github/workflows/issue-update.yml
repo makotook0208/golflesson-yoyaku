@@ -1,0 +1,41 @@
+name: 予約状況を更新（フォーム）
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  update:
+    if: startsWith(github.event.issue.title, '予約状況の更新')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: フォーム内容を読み取り
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: python3 parse_issue.py >> "$GITHUB_ENV"
+      - name: ボードを更新
+        env:
+          TZ: Asia/Tokyo
+        run: python3 update_board.py
+      - name: コミットして反映
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "変更なし"
+          else
+            git commit -am "Update via issue #${{ github.event.issue.number }}"
+            git push
+          fi
+      - name: 完了報告してIssueを閉じる
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue close ${{ github.event.issue.number }} \
+            -c "✅ 反映しました。30秒〜1分でホームページに表示されます。" \
+            -R ${{ github.repository }}

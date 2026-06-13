@@ -1,0 +1,68 @@
+name: 予約状況の更新
+description: 高橋レッスンの予約状況を更新します（送信すると自動で反映されます）
+title: "予約状況の更新"
+labels: ["yoyaku"]
+body:
+  - type: input
+    id: date
+    attributes:
+      label: 日付（例 6/18）
+      description: 変えない時は空欄のままでOK
+      placeholder: "6/18"
+    validations:
+      required: false
+  - type: dropdown
+    id: slot1
+    attributes:
+      label: ①18:00〜19:00
+      default: 0
+      options:
+        - 変更なし
+        - 満員
+        - 残り1名
+        - 残り2名
+        - 残り3名
+        - 残り4名
+        - 残り5名
+        - 残り6名
+    validations:
+      required: true
+  - type: dropdown
+    id: slot2
+    attributes:
+      label: ②19:00〜20:00
+      default: 0
+      options:
+        - 変更なし
+        - 満員
+        - 残り1名
+        - 残り2名
+        - 残り3名
+        - 残り4名
+        - 残り5名
+        - 残り6名
+    validations:
+      required: true
+  - type: dropdown
+    id: slot3
+    attributes:
+      label: ③20:00〜21:00
+      default: 0
+      options:
+        - 変更なし
+        - 満員
+        - 残り1名
+        - 残り2名
+        - 残り3名
+        - 残り4名
+        - 残り5名
+        - 残り6名
+    validations:
+      required: true
+  - type: input
+    id: note
+    attributes:
+      label: 注記（通常は空欄でOK）
+      description: 変えたい時だけ入力
+    validations:
+      required: false
