@@ -1,0 +1,59 @@
+name: 予約状況を更新
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: '日付（例 6/18）※変えない時は空欄'
+        required: false
+        default: ''
+      slot1:
+        description: '①18:00〜19:00'
+        required: true
+        type: choice
+        default: '変更なし'
+        options: ['変更なし', '満員', '残り1名', '残り2名', '残り3名', '残り4名', '残り5名', '残り6名']
+      slot2:
+        description: '②19:00〜20:00'
+        required: true
+        type: choice
+        default: '変更なし'
+        options: ['変更なし', '満員', '残り1名', '残り2名', '残り3名', '残り4名', '残り5名', '残り6名']
+      slot3:
+        description: '③20:00〜21:00'
+        required: true
+        type: choice
+        default: '変更なし'
+        options: ['変更なし', '満員', '残り1名', '残り2名', '残り3名', '残り4名', '残り5名', '残り6名']
+      note:
+        description: '注記（通常は空欄でOK）'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ボードを更新
+        env:
+          TZ: Asia/Tokyo
+          DATE: ${{ inputs.date }}
+          SLOT1: ${{ inputs.slot1 }}
+          SLOT2: ${{ inputs.slot2 }}
+          SLOT3: ${{ inputs.slot3 }}
+          NOTE: ${{ inputs.note }}
+        run: python3 update_board.py
+      - name: コミットして反映
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "変更なし（更新する内容がありませんでした）"
+          else
+            git commit -am "Update via form: ①${{ inputs.slot1 }} ②${{ inputs.slot2 }} ③${{ inputs.slot3 }} ${{ inputs.date }}"
+            git push
+          fi
